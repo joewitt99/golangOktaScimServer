@@ -1,5 +1,6 @@
 package main
 
+
 type inboundUserObj struct {
 	Schemas []string `json:"schemas"`
 	UserName string `json:"userName"`

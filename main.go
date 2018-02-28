@@ -190,7 +190,9 @@ func users(w http.ResponseWriter, req *http.Request) {
 
 	case "GET":
 
-		if (len(req.URL.Query().Get("filter")) != 0) {
+		fmt.Printf("URL = %s", req.URL)
+
+		/*if (len(req.URL.Query().Get("filter")) != 0) {
 			//This always returns a dummy response so Okta thinks it's okay to add Users
 			//Long Story... It make Okta always push Users, not for production !
 			fmt.Fprint(w, `{"totalResults": 0,"schemas": ["urn:scim:schemas:core:1.0"],"itemsPerPage": 0,"startIndex": 1,"Resources": []}`)
@@ -205,7 +207,7 @@ func users(w http.ResponseWriter, req *http.Request) {
 				fmt.Fprint(w, returnString) //Returns Users in users.csv
 				return;
 			}
-		}
+		}*/
 		break;
 
 	case "PUT": //Put equal Delete User

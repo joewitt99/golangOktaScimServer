@@ -204,7 +204,6 @@ func users(w http.ResponseWriter, req *http.Request) {
 
 		result, _ := json.Marshal(s) //todo: should check for errors
 
-		return;
 		if (len(req.URL.Query().Get("filter")) != 0) {
 			var output = `{"totalResults": 1,
 							"schemas": ["urn:scim:schemas:core:1.0"],"itemsPerPage": 5,

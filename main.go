@@ -191,7 +191,7 @@ func users(w http.ResponseWriter, req *http.Request) {
 	case "GET":
 
 		fmt.Printf("URL = %s\n", req.URL)
-		fmt.Printf("filter string %s\n", req.URL.Query().Get("filter)"))
+		fmt.Printf("filter string %s\n", req.URL.Query().Get("filter"))
 
 		type schemasOpt []string;
 

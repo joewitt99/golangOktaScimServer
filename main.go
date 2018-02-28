@@ -204,21 +204,18 @@ func users(w http.ResponseWriter, req *http.Request) {
 
 		result, _ := json.Marshal(s) //todo: should check for errors
 
-		var output = `{"totalResults": 1,
-							"schemas": ["urn:scim:schemas:core:1.0"],"itemsPerPage": 5,
-							"startIndex": 1,"Resources": [ %s ]}`
-
-		fmt.Printf(output+"\n", result)
-
 		return;
 		if (len(req.URL.Query().Get("filter")) != 0) {
 			var output = `{"totalResults": 1,
 							"schemas": ["urn:scim:schemas:core:1.0"],"itemsPerPage": 5,
 							"startIndex": 1,"Resources": [ %s ]}`
+			fmt.Printf(output+"\n", result)
 			fmt.Fprintf(w, output, result)
 			return;
 		} else {
+			fmt.Println(result)
 			fmt.Fprint(w, result)
+			return
 		}
 		break;
 

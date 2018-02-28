@@ -108,7 +108,7 @@ func serverConfigs(w http.ResponseWriter, req *http.Request) {
     "supported":false
   },
   "filter": {
-    "supported":true,
+    "supported":false,
     "maxResults": 100
   },
   "changePassword" : {
@@ -121,7 +121,7 @@ func serverConfigs(w http.ResponseWriter, req *http.Request) {
     "supported":false
   },
   "authenticationSchemes": [],
-  "urn:okta:schemas:scim:providerconfig:1.0": {    "userManagementCapabilities": ["GROUP_PUSH", "IMPORT_NEW_USERS", "IMPORT_PROFILE_UPDATES", "PUSH_NEW_USERS", "PUSH_PASSWORD_UPDATES", "PUSH_PENDING_USERS", "PUSH_PROFILE_UPDATES", "PUSH_USER_DEACTIVATION", "REACTIVATE_USERS"    ]  }}
+  "urn:okta:schemas:scim:providerconfig:1.0": {    "userManagementCapabilities": ["PUSH_PASSWORD_UPDATES"]  }}
 `
 	w.Write([]byte(output))
 
@@ -194,22 +194,22 @@ func users(w http.ResponseWriter, req *http.Request) {
 		fmt.Printf("URL = %s\n", req.URL)
 		fmt.Printf("filter string %s\n", req.URL.Query().Get("filter"))
 
-		re1, _ := regexp.Compile(`(userName\seq\s)\"(.*)"$`)
-		qryStr := re1.FindStringSubmatch(req.URL.Query().Get("filter"))
-
 		type schemasOpt []string;
 
 		mySchema := schemasOpt{"urn:scim:schemas:core:1.0", "urn:scim:schemas:extension:enterprise:1.0"}
-		s := outboundUserObj{}
-
-		s.Schemas = mySchema
-		s.ID = qryStr[2]
-		s.UserName = qryStr[2]
-		s.Active = true
 
 		result, _ := json.Marshal(s) //todo: should check for errors
 
 		if (len(req.URL.Query().Get("filter")) != 0) {
+			re1, _ := regexp.Compile(`(userName\seq\s)"(.*)"$`)
+			qryStr := re1.FindStringSubmatch(req.URL.Query().Get("filter"))
+			s := outboundUserObj{}
+
+			s.Schemas = mySchema
+			s.ID = qryStr[2]
+			s.UserName = qryStr[2]
+			s.Active = true
+
 			var output = `{"totalResults": 1,
 							"schemas": ["urn:scim:schemas:core:1.0"],"itemsPerPage": 5,
 							"startIndex": 1,"Resources": [ %s ]}`
@@ -217,6 +217,14 @@ func users(w http.ResponseWriter, req *http.Request) {
 			fmt.Fprintf(w, output, result)
 			return;
 		} else {
+			vars := mux.Vars(req)
+			userName := vars["key"]
+			s := outboundUserObj{}
+
+			s.Schemas = mySchema
+			s.ID = userName
+			s.UserName = userName
+			s.Active = true
 			fmt.Printf("%s\n", result)
 			fmt.Fprint(w, result)
 			return

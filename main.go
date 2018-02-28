@@ -162,7 +162,7 @@ func users(w http.ResponseWriter, req *http.Request) {
 		jsonError := json.Unmarshal(body, &inboundUserObject) //todo: Should check for error
 
 		_ = jsonError;
-		fmt.Println(inboundUserObject.UserName)
+		fmt.Printf("username: %s, password: %s\n", inboundUserObject.UserName, inboundUserObject.Password)
 
 		returnedUserId := addUserCsv("444", inboundUserObject.UserName,
 			inboundUserObject.Password, inboundUserObject.Emails[0].Value,inboundUserObject.Name.GivenName,

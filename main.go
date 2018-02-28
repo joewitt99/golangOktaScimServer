@@ -203,12 +203,22 @@ func users(w http.ResponseWriter, req *http.Request) {
 		if (len(req.URL.Query().Get("filter")) != 0) {
 			re1, _ := regexp.Compile(`(userName\seq\s)"(.*)"$`)
 			qryStr := re1.FindStringSubmatch(req.URL.Query().Get("filter"))
+
+			var emailOpts = []struct {
+				Value   string `json:"value"`
+				Primary bool `json:"primary,omitempty"`
+				Type    string `json:"type"`
+			}{
+				{qryStr[2], true, "234234"},
+
+			}
 			s := outboundUserObj{}
 
 			s.Schemas = mySchema
 			s.ID = qryStr[2]
 			s.UserName = qryStr[2]
 			s.Active = true
+			s.Emails = emailOpts
 			result, _ := json.Marshal(s) //todo: should check for errors
 			var output = `{"totalResults": 1,
 							"schemas": ["urn:scim:schemas:core:1.0"],"itemsPerPage": 5,
@@ -219,12 +229,21 @@ func users(w http.ResponseWriter, req *http.Request) {
 		} else {
 			vars := mux.Vars(req)
 			userName := vars["key"]
+			var emailOpts = []struct {
+				Value   string `json:"value"`
+				Primary bool `json:"primary,omitempty"`
+				Type    string `json:"type"`
+			}{
+				{userName, true, "234234"},
+
+			}
 			s := outboundUserObj{}
 
 			s.Schemas = mySchema
 			s.ID = userName
 			s.UserName = userName
 			s.Active = true
+			s.Emails = emailOpts
 			result, _ := json.Marshal(s) //todo: should check for errors
 			fmt.Printf("%s\n", result)
 			fmt.Fprintf(w, "%s", result)

@@ -256,6 +256,8 @@ func users(w http.ResponseWriter, req *http.Request) {
 		fmt.Println("PUT request sent to User Controller PUT=Delete/Deactivate")
 		body, err := ioutil.ReadAll(req.Body)
 		_ = body
+
+		fmt.Printf("%s", body)
 		if err != nil {
 			panic(err)
 		}

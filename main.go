@@ -192,7 +192,7 @@ func users(w http.ResponseWriter, req *http.Request) {
 
 		fmt.Printf("URL = %s", req.URL)
 
-		fmt.Fprint(w, `{"totalResults": 1,
+		fmt.Fprintf(w, `{"totalResults": 1,
 							"schemas": ["urn:scim:schemas:core:1.0"],"itemsPerPage": 5,
 							"startIndex": 1,"Resources": [ { "userName:" "%s" }]}`, "bblue7@myemail.me")
 		return;

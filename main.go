@@ -190,7 +190,7 @@ func users(w http.ResponseWriter, req *http.Request) {
 
 	case "GET":
 
-		fmt.Printf("URL = %s", req.URL)
+		fmt.Printf("URL = %s\n", req.URL)
 
 		type schemasOpt []string;
 
@@ -209,24 +209,17 @@ func users(w http.ResponseWriter, req *http.Request) {
 							"startIndex": 1,"Resources": [ %s ]}`
 
 		fmt.Printf(output+"\n", result)
-		fmt.Fprintf(w, output, result)
+
 		return;
-		/*if (len(req.URL.Query().Get("filter")) != 0) {
-			//This always returns a dummy response so Okta thinks it's okay to add Users
-			//Long Story... It make Okta always push Users, not for production !
-			fmt.Fprint(w, `{"totalResults": 0,"schemas": ["urn:scim:schemas:core:1.0"],"itemsPerPage": 0,"startIndex": 1,"Resources": []}`)
+		if (len(req.URL.Query().Get("filter")) != 0) {
+			var output = `{"totalResults": 1,
+							"schemas": ["urn:scim:schemas:core:1.0"],"itemsPerPage": 5,
+							"startIndex": 1,"Resources": [ %s ]}`
+			fmt.Fprintf(w, output, result)
 			return;
 		} else {
-			//Most likely this is an import, since there is not filter in the request
-			returnString, result := importer()
-			if (result !=nil) { //Something went wrong.. Just return User does not exist
-				fmt.Fprint(w, `{"totalResults": 0,"schemas": ["urn:scim:schemas:core:1.0"],"itemsPerPage": 0,"startIndex": 1,"Resources": []}`)
-				return;
-			} else { // All good, return the JSON string from importer
-				fmt.Fprint(w, returnString) //Returns Users in users.csv
-				return;
-			}
-		}*/
+			fmt.Fprint(w, result)
+		}
 		break;
 
 	case "PUT": //Put equal Delete User

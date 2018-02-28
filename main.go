@@ -198,7 +198,7 @@ func users(w http.ResponseWriter, req *http.Request) {
 
 		mySchema := schemasOpt{"urn:scim:schemas:core:1.0", "urn:scim:schemas:extension:enterprise:1.0"}
 
-		result, _ := json.Marshal(s) //todo: should check for errors
+
 
 		if (len(req.URL.Query().Get("filter")) != 0) {
 			re1, _ := regexp.Compile(`(userName\seq\s)"(.*)"$`)
@@ -209,7 +209,7 @@ func users(w http.ResponseWriter, req *http.Request) {
 			s.ID = qryStr[2]
 			s.UserName = qryStr[2]
 			s.Active = true
-
+			result, _ := json.Marshal(s) //todo: should check for errors
 			var output = `{"totalResults": 1,
 							"schemas": ["urn:scim:schemas:core:1.0"],"itemsPerPage": 5,
 							"startIndex": 1,"Resources": [ %s ]}`
@@ -225,6 +225,7 @@ func users(w http.ResponseWriter, req *http.Request) {
 			s.ID = userName
 			s.UserName = userName
 			s.Active = true
+			result, _ := json.Marshal(s) //todo: should check for errors
 			fmt.Printf("%s\n", result)
 			fmt.Fprint(w, result)
 			return

@@ -144,7 +144,7 @@ func groups(w http.ResponseWriter, req *http.Request) {
 
 func users(w http.ResponseWriter, req *http.Request) {
 
-	fmt.Println("hit users controller")
+	fmt.Printf("hit users controller %s\n", req.Method)
 
 	switch req.Method {
 
@@ -191,11 +191,11 @@ func users(w http.ResponseWriter, req *http.Request) {
 
 		s.Schemas = mySchema
 		s.ID = returnedUserId
-		s.UserName = "bob"
+		s.UserName = inboundUserObject.UserName
 		s.Password = "pass"
 		s.Active = true
-		s.Name = nameOpt{"123", "123", "123"}
-		s.Emails = emailOpts
+		s.Name = inboundUserObject.Name
+		s.Emails = inboundUserObject.Emails
 
 		result, _ := json.Marshal(s) //todo: should check for errors
 		fmt.Fprint(w, string(result))

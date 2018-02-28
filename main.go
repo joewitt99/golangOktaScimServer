@@ -227,7 +227,7 @@ func users(w http.ResponseWriter, req *http.Request) {
 			s.Active = true
 			result, _ := json.Marshal(s) //todo: should check for errors
 			fmt.Printf("%s\n", result)
-			fmt.Fprint(w, result)
+			fmt.Fprintf(w, "%s", result)
 			return
 		}
 		break;

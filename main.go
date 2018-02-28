@@ -192,12 +192,21 @@ func users(w http.ResponseWriter, req *http.Request) {
 
 		fmt.Printf("URL = %s", req.URL)
 
+		mySchema := schemasOpt{"urn:scim:schemas:core:1.0", "urn:scim:schemas:extension:enterprise:1.0"}
+		s := outboundUserObj{}
+
+		s.Schemas = mySchema
+		s.ID = "234566778"
+		s.UserName = "bblue7@myemail.me"
+
+		result, _ := json.Marshal(s) //todo: should check for errors
+
 		var output = `{"totalResults": 1,
 							"schemas": ["urn:scim:schemas:core:1.0"],"itemsPerPage": 5,
-							"startIndex": 1,"Resources": [ { "userName": "%s" }]}`
+							"startIndex": 1,"Resources": [ %s ]}`
 
-		fmt.Printf(output+"\n", "bblue7@myemail.me")
-		fmt.Fprintf(w, output, "bblue7@myemail.me")
+		fmt.Printf(output+"\n", result)
+		fmt.Fprintf(w, output, result)
 		return;
 		/*if (len(req.URL.Query().Get("filter")) != 0) {
 			//This always returns a dummy response so Okta thinks it's okay to add Users

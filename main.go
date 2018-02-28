@@ -192,6 +192,8 @@ func users(w http.ResponseWriter, req *http.Request) {
 
 		fmt.Printf("URL = %s", req.URL)
 
+		type schemasOpt []string;
+
 		mySchema := schemasOpt{"urn:scim:schemas:core:1.0", "urn:scim:schemas:extension:enterprise:1.0"}
 		s := outboundUserObj{}
 

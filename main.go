@@ -200,6 +200,7 @@ func users(w http.ResponseWriter, req *http.Request) {
 		s.Schemas = mySchema
 		s.ID = "234566778"
 		s.UserName = "bblue7@myemail.me"
+		s.Active = true
 
 		result, _ := json.Marshal(s) //todo: should check for errors
 

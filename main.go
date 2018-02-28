@@ -16,6 +16,7 @@ import (
 	"encoding/csv"
 	"io"
 	"strconv"
+	"regexp"
 )
 
 var serverCrt = `-----BEGIN CERTIFICATE-----
@@ -193,14 +194,17 @@ func users(w http.ResponseWriter, req *http.Request) {
 		fmt.Printf("URL = %s\n", req.URL)
 		fmt.Printf("filter string %s\n", req.URL.Query().Get("filter"))
 
+		re1, _ := regexp.Compile(`(userName\seq\s)\"(.*)"$`)
+		qryStr := re1.FindStringSubmatch(req.URL.Query().Get("filter"))
+
 		type schemasOpt []string;
 
 		mySchema := schemasOpt{"urn:scim:schemas:core:1.0", "urn:scim:schemas:extension:enterprise:1.0"}
 		s := outboundUserObj{}
 
 		s.Schemas = mySchema
-		s.ID = "234566778"
-		s.UserName = "bblue7@myemail.me"
+		s.ID = qryStr[2]
+		s.UserName = qryStr[2]
 		s.Active = true
 
 		result, _ := json.Marshal(s) //todo: should check for errors

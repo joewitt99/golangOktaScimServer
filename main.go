@@ -170,21 +170,6 @@ func users(w http.ResponseWriter, req *http.Request) {
 
 		type schemasOpt []string;
 
-		type nameOpt struct {
-			Formatted  string `json:"formatted"`
-			GivenName  string `json:"givenName"`
-			FamilyName string `json:"familyName"`
-		}
-
-		var emailOpts = []struct {
-			Value   string `json:"value"`
-			Primary bool `json:"primary,omitempty"`
-			Type    string `json:"type"`
-		}{
-			{"123", true, "234234"},
-
-		}
-
 		mySchema := schemasOpt{"urn:scim:schemas:core:1.0", "urn:scim:schemas:extension:enterprise:1.0"}
 
 		s := outboundUserObj{}
